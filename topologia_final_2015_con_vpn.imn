@@ -1,0 +1,2739 @@
+node n3 {
+    type router
+    model host
+    network-config {
+	hostname GoogleOpenDNS
+	!
+	interface eth0
+	 ip address 8.8.4.4/24
+	!
+    }
+    canvas c1
+    iconcoords {864.0 647.0}
+    labelcoords {861.0 684.0}
+    interface-peer {eth0 n7}
+    services {DefaultRoute SSH Resolver ratelimit}
+    custom-config {
+	custom-config-id service:Resolver
+	custom-command Resolver
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.root', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Resolver:/etc/bind/db.root
+	custom-command /etc/bind/db.root
+	config {
+	.		NS	ns
+	.		NS	ns2.
+	.		NS	ns3.
+	.		NS	ns4.
+	com.		NS	ns.com.
+	edu.		NS	ns.edu.
+	
+	ns		A	193.81.2.10
+	ns2		A	193.81.2.11
+	ns3		A	8.8.4.11
+	ns4		A	193.81.5.10
+	ns.edu.		A	8.8.4.10
+	ns.com.		A	193.81.2.12
+	
+	
+	
+	}
+    }
+}
+
+node n5 {
+    type router
+    model router
+    network-config {
+	hostname n5
+	!
+	interface eth0
+	 ip address 193.81.0.1/24
+	!
+	interface eth1
+	 ip address 193.81.2.1/24
+	!
+    }
+    canvas c1
+    iconcoords {348.0 429.0}
+    labelcoords {348.0 461.0}
+    interface-peer {eth1 n8}
+    interface-peer {eth0 n13}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n6 {
+    type router
+    model router
+    network-config {
+	hostname n6
+	!
+	interface eth0
+	 ip address 193.81.1.2/24
+	!
+	interface eth2
+	 ip address 193.81.3.1/24
+	!
+	interface eth1
+	 ip address 8.8.4.1/24
+	!
+    }
+    canvas c1
+    iconcoords {648.0 455.0}
+    labelcoords {613.0 474.0}
+    interface-peer {eth1 n7}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+    interface-peer {eth2 n12}
+    interface-peer {eth0 n13}
+}
+
+node n7 {
+    type lanswitch
+    network-config {
+	hostname n7
+	!
+    }
+    canvas c1
+    iconcoords {678.0 623.0}
+    labelcoords {678.0 647.0}
+    interface-peer {e0 n3}
+    interface-peer {e2 n6}
+    interface-peer {e1 n9}
+    interface-peer {e3 n10}
+}
+
+node n4 {
+    type router
+    model host
+    network-config {
+	hostname a-root-server
+	!
+	interface eth0
+	 ip address 193.81.2.10/24
+	!
+    }
+    canvas c1
+    iconcoords {330.0 602.0}
+    labelcoords {330.0 634.0}
+    interface-peer {eth0 n8}
+    services {DefaultRoute SSH RootServer ratelimit}
+    custom-config {
+	custom-config-id service:RootServer
+	custom-command RootServer
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.root', )
+	}
+    }
+    custom-config {
+	custom-config-id service:RootServer:/etc/bind/db.root
+	custom-command /etc/bind/db.root
+	config {
+	$TTL	120
+	@		SOA	ns.  hostmaster.ns. ( 1 3600 1200 604800 60 )
+			NS	ns
+	.		NS	ns2.
+	.		NS	ns3.
+	.		NS	ns4.
+	com.		NS	ns.com.
+	edu.		NS	ns.edu.
+	
+	ns		A	193.81.2.10
+	ns2		A	193.81.2.11
+	ns3		A	8.8.4.11
+	ns4		A	193.81.5.10
+	ns.edu.		A	8.8.4.10
+	ns.com.		A	193.81.2.12
+	}
+    }
+}
+
+node n8 {
+    type lanswitch
+    network-config {
+	hostname n8
+	!
+    }
+    canvas c1
+    iconcoords {227.0 522.0}
+    labelcoords {227.0 546.0}
+    interface-peer {e0 n5}
+    interface-peer {e1 n4}
+    interface-peer {e2 n1}
+    interface-peer {e3 n2}
+}
+
+node n1 {
+    type router
+    model host
+    network-config {
+	hostname b-root-server
+	!
+	interface eth0
+	 ip address 193.81.2.11/24
+	!
+    }
+    canvas c1
+    iconcoords {77.0 552.0}
+    labelcoords {77.0 584.0}
+    interface-peer {eth0 n8}
+    custom-config {
+	custom-config-id service:RootServer
+	custom-command RootServer
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.root', )
+	}
+    }
+    custom-config {
+	custom-config-id service:RootServer:/etc/bind/db.root
+	custom-command /etc/bind/db.root
+	config {
+	$TTL	120
+	@		SOA	ns.  hostmaster.ns. ( 1 3600 1200 604800 60 )
+			NS	ns
+	.		NS	ns2.
+	.		NS	ns3.
+	.		NS	ns4.
+	com.		NS	ns.com.
+	edu.		NS	ns.edu.
+	
+	ns		A	193.81.2.10
+	ns2		A	193.81.2.11
+	ns3		A	8.8.4.11
+	ns4		A	193.81.5.10
+	ns.edu.		A	8.8.4.10
+	ns.com.		A	193.81.2.12
+	}
+    }
+    services {DefaultRoute SSH RootServer ratelimit}
+}
+
+node n2 {
+    type router
+    model host
+    network-config {
+	hostname comTLD
+	!
+	interface eth0
+	 ip address 193.81.2.12/24
+	!
+    }
+    canvas c1
+    iconcoords {171.0 592.0}
+    labelcoords {171.0 624.0}
+    interface-peer {eth0 n8}
+    custom-config {
+	custom-config-id service:TLD_com
+	custom-command TLD_com
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.com.', )
+	}
+    }
+    custom-config {
+	custom-config-id service:TLD_com:/etc/bind/db.com.
+	custom-command /etc/bind/db.com.
+	config {
+	$TTL	120
+	@		SOA	ns.com.  hostmaster.ns.com. ( 1 3600 1200 604800 60 )
+			NS	ns
+	
+	google.com.		NS	ns.google.com.
+	att.com.		NS	ns.att.com.
+	
+	ns		A	193.81.2.12
+	
+	ns.google.com.		A	193.81.3.11
+	ns.att.com.		A	193.81.5.12
+	
+	}
+    }
+    services {DefaultRoute SSH TLD_com ratelimit}
+}
+
+node n9 {
+    type router
+    model host
+    network-config {
+	hostname eduTLD
+	!
+	interface eth0
+	 ip address 8.8.4.10/24
+	!
+    }
+    canvas c1
+    iconcoords {905.0 504.0}
+    labelcoords {905.0 536.0}
+    interface-peer {eth0 n7}
+    custom-config {
+	custom-config-id service:TLD_edu
+	custom-command TLD_edu
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.edu.', )
+	}
+    }
+    custom-config {
+	custom-config-id service:TLD_edu:/etc/bind/db.edu.
+	custom-command /etc/bind/db.edu.
+	config {
+	$TTL	120
+	@		SOA	ns.edu.  hostmaster.ns.edu. ( 1 3600 1200 604800 60 )
+			NS	ns
+	syper.edu.		NS	ns.syper.edu.
+	
+	ns		A	8.8.4.10
+	ns.syper.edu.		A	193.81.7.34
+	
+	
+	}
+    }
+    services {DefaultRoute SSH TLD_edu ratelimit}
+}
+
+node n10 {
+    type router
+    model host
+    network-config {
+	hostname c-root-server
+	!
+	interface eth0
+	 ip address 8.8.4.11/24
+	!
+    }
+    canvas c1
+    iconcoords {880.0 580.0}
+    labelcoords {880.0 612.0}
+    interface-peer {eth0 n7}
+    custom-config {
+	custom-config-id service:RootServer
+	custom-command RootServer
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.root', )
+	}
+    }
+    custom-config {
+	custom-config-id service:RootServer:/etc/bind/db.root
+	custom-command /etc/bind/db.root
+	config {
+	$TTL	120
+	@		SOA	ns.  hostmaster.ns. ( 1 3600 1200 604800 60 )
+			NS	ns
+	.		NS	ns2.
+	.		NS	ns3.
+	.		NS	ns4.
+	com.		NS	ns.com.
+	edu.		NS	ns.edu.
+	
+	ns		A	193.81.2.10
+	ns2		A	193.81.2.11
+	ns3		A	8.8.4.11
+	ns4		A	193.81.5.10
+	ns.edu.		A	8.8.4.10
+	ns.com.		A	193.81.2.12
+	}
+    }
+    services {DefaultRoute SSH RootServer ratelimit}
+}
+
+node n11 {
+    type router
+    model host
+    network-config {
+	hostname WWW-google-com
+	!
+	interface eth0
+	 ip address 193.81.3.10/24
+	!
+    }
+    canvas c1
+    iconcoords {907.0 417.0}
+    labelcoords {929.0 397.0}
+    interface-peer {eth0 n12}
+    custom-config {
+	custom-config-id service:HTTP
+	custom-command HTTP
+	config {
+	dirs=('/var/run/apache2', '/var/log/apache2', '/var/lock/apache2', '/run/lock', '/etc/apache2/sites-enabled', )
+	files=('/etc/apache2/sites-enabled/site.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:HTTP:/etc/apache2/sites-enabled/site.conf
+	custom-command /etc/apache2/sites-enabled/site.conf
+	config {
+	<VirtualHost *:80>
+		ServerName www.google.com
+		ServerAdmin webmaster@localhost
+		DocumentRoot /var/www/GOOGLE
+	
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+	
+	</VirtualHost>
+	
+	}
+    }
+    services {DefaultRoute SSH HTTP}
+}
+
+node n12 {
+    type lanswitch
+    network-config {
+	hostname n12
+	!
+    }
+    canvas c1
+    iconcoords {810.0 487.0}
+    labelcoords {807.0 517.0}
+    interface-peer {e0 n6}
+    interface-peer {e1 n11}
+    interface-peer {e2 n22}
+}
+
+node n13 {
+    type router
+    model router
+    network-config {
+	hostname n13
+	!
+	interface eth2
+	 ip address 193.81.4.1/24
+	!
+	interface eth1
+	 ip address 193.81.1.1/24
+	!
+	interface eth0
+	 ip address 193.81.0.2/24
+	!
+    }
+    canvas c1
+    iconcoords {613.0 312.0}
+    labelcoords {639.0 297.0}
+    interface-peer {eth0 n5}
+    interface-peer {eth1 n6}
+    interface-peer {eth2 n14}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n14 {
+    type router
+    model router
+    network-config {
+	hostname n14
+	!
+	interface eth2
+	 ip address 193.81.12.2/24
+	!
+	interface eth1
+	 ip address 193.81.5.1/24
+	!
+	interface eth0
+	 ip address 193.81.4.2/24
+	!
+    }
+    canvas c1
+    iconcoords {555.0 176.0}
+    labelcoords {555.0 208.0}
+    interface-peer {eth0 n13}
+    interface-peer {eth1 n17}
+    interface-peer {eth2 n46}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n15 {
+    type router
+    model host
+    network-config {
+	hostname d-root-server
+	!
+	interface eth0
+	 ip address 193.81.5.10/24
+	!
+    }
+    canvas c1
+    iconcoords {173.0 94.0}
+    labelcoords {173.0 126.0}
+    interface-peer {eth0 n17}
+    custom-config {
+	custom-config-id service:RootServer
+	custom-command RootServer
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.root', )
+	}
+    }
+    custom-config {
+	custom-config-id service:RootServer:/etc/bind/db.root
+	custom-command /etc/bind/db.root
+	config {
+	$TTL	120
+	@		SOA	ns.  hostmaster.ns. ( 1 3600 1200 604800 60 )
+			NS	ns
+	.		NS	ns2.
+	.		NS	ns3.
+	.		NS	ns4.
+	com.		NS	ns.com.
+	edu.		NS	ns.edu.
+	
+	ns		A	193.81.2.10
+	ns2		A	193.81.2.11
+	ns3		A	8.8.4.11
+	ns4		A	193.81.5.10
+	ns.edu.		A	8.8.4.10
+	ns.com.		A	193.81.2.12
+	}
+    }
+    services {DefaultRoute SSH RootServer ratelimit}
+}
+
+node n16 {
+    type router
+    model host
+    network-config {
+	hostname WWW-att-com
+	!
+	interface eth0
+	 ip address 193.81.5.11/24
+	!
+    }
+    canvas c1
+    iconcoords {407.0 213.0}
+    labelcoords {407.0 245.0}
+    interface-peer {eth0 n17}
+    custom-config {
+	custom-config-id service:HTTP
+	custom-command HTTP
+	config {
+	dirs=('/var/run/apache2', '/var/log/apache2', '/var/lock/apache2', '/run/lock', '/etc/apache2/sites-enabled', )
+	files=('/etc/apache2/sites-enabled/site.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:HTTP:/etc/apache2/sites-enabled/site.conf
+	custom-command /etc/apache2/sites-enabled/site.conf
+	config {
+	<VirtualHost *:80>
+		ServerName www.att.com
+		ServerAdmin webmaster@localhost
+		DocumentRoot /var/www/ATT
+	
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+	
+	</VirtualHost>
+	
+	}
+    }
+    services {DefaultRoute SSH HTTP}
+}
+
+node n17 {
+    type lanswitch
+    network-config {
+	hostname n17
+	!
+    }
+    canvas c1
+    iconcoords {272.0 164.0}
+    labelcoords {272.0 188.0}
+    interface-peer {e0 n15}
+    interface-peer {e1 n16}
+    interface-peer {e2 n14}
+    interface-peer {e3 n59}
+}
+
+node n18 {
+    type router
+    model router
+    network-config {
+	hostname n18
+	!
+	interface eth1
+	 ip address 193.81.17.1/24
+	!
+	interface eth0
+	 ip address 193.81.6.1/24
+	!
+    }
+    canvas c3
+    iconcoords {302.0 223.0}
+    labelcoords {302.0 255.0}
+    interface-peer {eth0 n19}
+    interface-peer {eth1 n54}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward IPsec ratelimit}
+    custom-config {
+	custom-config-id service:IPsec
+	custom-command IPsec
+	config {
+	files=('ipsec.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:IPsec:ipsec.sh
+	custom-command ipsec.sh
+	config {
+	#!/bin/sh
+	# set up static tunnel mode security assocation for service (security.py)
+	# -------- CUSTOMIZATION REQUIRED --------
+	#
+	# The IPsec service builds ESP tunnels between the specified peers using the
+	# racoon IKEv2 keying daemon. You need to provide keys and the addresses of
+	# peers, along with subnets to tunnel.
+	
+	# directory containing the certificate and key described below
+	keydir=/etc/core/keys
+	
+	# the name used for the "$certname.pem" x509 certificate and 
+	# "$certname.key" RSA private key, which can be generated using openssl
+	certname=ipsec1
+	
+	# list the public-facing IP addresses, starting with the localhost and followed
+	# by each tunnel peer, separated with a single space
+	tunnelhosts="193.81.17.1AND193.81.11.1"
+	
+	# Define T<i> where i is the index for each tunnel peer host from
+	# the tunnel_hosts list above (0 is localhost).
+	# T<i> is a list of IPsec tunnels with peer i, with a local subnet address
+	# followed by the remote subnet address:
+	#   T<i>="<local>AND<remote> <local>AND<remote>"
+	# For example, 172.16.0.0/24 is a local network (behind this node) to be
+	# tunneled and 172.16.2.0/24 is a remote network (behind peer 1)
+	T1="193.81.6.0/24AND193.81.7.16/28 193.81.6.0/24AND193.81.7.32/28 193.81.6.0/24AND193.81.7.0/28"
+	
+	# -------- END CUSTOMIZATION --------
+	
+	echo "building config $PWD/ipsec.conf..." 
+	echo "building config $PWD/ipsec.conf..." > $PWD/ipsec.log
+	
+	checkip=0
+	if [ "$(dpkg -l | grep " sipcalc ")" = "" ]; then
+	   echo "WARNING: ip validation disabled because package sipcalc not installed
+	        " >> $PWD/ipsec.log
+	   checkip=1
+	fi
+	
+	echo "#!/usr/sbin/setkey -f
+	    # Flush the SAD and SPD
+	    flush;
+	    spdflush;
+	
+	    # Security policies  \
+	     " > $PWD/ipsec.conf
+	i=0
+	for hostpair in $tunnelhosts; do 
+	    i=`expr $i + 1`
+	    # parse tunnel host IP
+	    thishost=${hostpair%%AND*}
+	    peerhost=${hostpair##*AND} 
+	    if [ $checkip = "0" ] &&
+	       [ "$(sipcalc "$thishost" "$peerhost" | grep ERR)" != "" ]; then
+		  echo "ERROR: invalid host address $thishost or $peerhost \
+	             " >> $PWD/ipsec.log
+	    fi
+	    # parse each tunnel addresses 
+	    tunnel_list_var_name=T$i
+	    eval tunnels="$"$tunnel_list_var_name""
+	    for ttunnel in $tunnels; do
+	        lclnet=${ttunnel%%AND*}
+	        rmtnet=${ttunnel##*AND} 
+	    	if [ $checkip = "0" ] && 
+	           [ "$(sipcalc "$lclnet" "$rmtnet"| grep ERR)" != "" ]; then
+	    	    echo "ERROR: invalid tunnel address $lclnet and $rmtnet \
+	                 " >> $PWD/ipsec.log
+		fi
+	    	# add tunnel policies
+		echo "
+	    spdadd $lclnet $rmtnet any -P out ipsec
+		esp/tunnel/$thishost-$peerhost/require;
+	    spdadd $rmtnet $lclnet any -P in ipsec
+		esp/tunnel/$peerhost-$thishost/require; \
+	    	    " >> $PWD/ipsec.conf
+	    done
+	done
+	
+	echo "building config $PWD/racoon.conf..."
+	if [ ! -e $keydir\/$certname.key ] || [ ! -e $keydir\/$certname.pem ]; then
+	     echo "ERROR: missing certification files under $keydir \
+	$certname.key or $certname.pem " >> $PWD/ipsec.log
+	fi
+	echo "
+		 path certificate \"$keydir\";
+		 listen {
+			 adminsock disabled;
+		 }
+		 remote anonymous
+		 {
+			 exchange_mode main;
+	 		 certificate_type x509 \"$certname.pem\" \"$certname.key\";
+			 ca_type x509 \"ca-cert.pem\";
+			 my_identifier asn1dn;
+			 peers_identifier asn1dn;
+	
+			 proposal {
+				 encryption_algorithm 3des ;
+				 hash_algorithm sha1;
+				 authentication_method rsasig ;
+				 dh_group modp768;
+			 }
+		 }
+		 sainfo anonymous
+		 {
+			 pfs_group modp768;
+			 lifetime time 1 hour ;
+			 encryption_algorithm 3des, blowfish 448, rijndael ;
+			 authentication_algorithm hmac_sha1, hmac_md5 ;
+			 compression_algorithm deflate ;
+		 }
+		" > $PWD/racoon.conf
+	
+	# the setkey program is required from the ipsec-tools package
+	echo "running setkey -f $PWD/ipsec.conf..."
+	setkey -f $PWD/ipsec.conf
+	
+	echo "running racoon -d -f $PWD/racoon.conf..."
+	racoon -d -f $PWD/racoon.conf -l racoon.log
+	
+	}
+    }
+}
+
+node n19 {
+    type hub
+    network-config {
+	hostname n19
+	!
+    }
+    canvas c3
+    iconcoords {524.0 389.0}
+    labelcoords {524.0 413.0}
+    interface-peer {e0 n18}
+    interface-peer {e2 n21}
+    interface-peer {e5 n24}
+    interface-peer {e6 n25}
+    interface-peer {e7 n26}
+    interface-peer {e8 n27}
+}
+
+node n21 {
+    type router
+    model host
+    network-config {
+	hostname ImpresoraSucursal
+	!
+	interface eth0
+	 ip address 193.81.6.11/24
+	!
+    }
+    canvas c3
+    iconcoords {308.0 492.0}
+    labelcoords {308.0 524.0}
+    interface-peer {eth0 n19}
+    custom-config {
+	custom-config-id service:servicios
+	custom-command servicios
+	config {
+	files=('startServices.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:servicios:startServices.sh
+	custom-command startServices.sh
+	config {
+	ncat -l -k 9100 &
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute
+	custom-command StaticRoute
+	config {
+	files=('staticroute.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute:staticroute.sh
+	custom-command staticroute.sh
+	config {
+	#!/bin/sh
+	# auto-generated by StaticRoute service (utility.py)
+	#
+	# NOTE: this service must be customized to be of any use
+	#       Below are samples that you can uncomment and edit.
+	#
+	#/sbin/ip route add 10.9.8.0/24 via 193.81.6.1
+	
+	
+	}
+    }
+    services {DefaultRoute StaticRoute SSH ratelimit servicios}
+}
+
+node n24 {
+    type router
+    model PC
+    network-config {
+	hostname User5
+	!
+	interface eth0
+	 ip address 193.81.6.20/24
+	!
+    }
+    canvas c3
+    iconcoords {554.0 237.0}
+    labelcoords {542.0 215.0}
+    interface-peer {eth0 n19}
+    custom-config {
+	custom-config-id service:resolvconf
+	custom-command resolvconf
+	config {
+	files=('/etc/resolvconf/resolv.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:resolvconf:/etc/resolvconf/resolv.conf
+	custom-command /etc/resolvconf/resolv.conf
+	config {
+	nameserver 193.81.7.14
+	}
+    }
+    services {DefaultRoute resolvconf ratelimit}
+}
+
+node n25 {
+    type router
+    model PC
+    network-config {
+	hostname User6
+	!
+	interface eth0
+	 ip address 193.81.6.21/24
+	!
+    }
+    canvas c3
+    iconcoords {742.0 252.0}
+    labelcoords {740.0 224.0}
+    interface-peer {eth0 n19}
+    custom-config {
+	custom-config-id service:Resolver
+	custom-command Resolver
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.root', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Resolver:/etc/bind/db.root
+	custom-command /etc/bind/db.root
+	config {
+	.		NS	ns
+	.		NS	ns2.
+	.		NS	ns3.
+	.		NS	ns4.
+	com.		NS	ns.com.
+	edu.		NS	ns.edu.
+	
+	ns		A	193.81.2.10
+	ns2		A	193.81.2.11
+	ns3		A	8.8.4.11
+	ns4		A	193.81.5.10
+	ns.edu.		A	8.8.4.10
+	ns.com.		A	193.81.2.12
+	}
+    }
+    custom-config {
+	custom-config-id service:resolvconf
+	custom-command resolvconf
+	config {
+	files=('/etc/resolvconf/resolv.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:resolvconf:/etc/resolvconf/resolv.conf
+	custom-command /etc/resolvconf/resolv.conf
+	config {
+	nameserver 193.81.7.14
+	}
+    }
+    services {DefaultRoute Resolver resolvconf ratelimit}
+}
+
+node n26 {
+    type router
+    model PC
+    network-config {
+	hostname User7
+	!
+	interface eth0
+	 ip address 193.81.6.22/24
+	!
+    }
+    canvas c3
+    iconcoords {794.0 344.0}
+    labelcoords {794.0 321.0}
+    interface-peer {eth0 n19}
+    custom-config {
+	custom-config-id service:resolvconf
+	custom-command resolvconf
+	config {
+	files=('/etc/resolvconf/resolv.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:resolvconf:/etc/resolvconf/resolv.conf
+	custom-command /etc/resolvconf/resolv.conf
+	config {
+	nameserver 193.81.7.14
+	}
+    }
+    services {DefaultRoute resolvconf ratelimit}
+}
+
+node n27 {
+    type router
+    model PC
+    network-config {
+	hostname User8
+	!
+	interface eth0
+	 ip address 193.81.6.23/24
+	!
+    }
+    canvas c3
+    iconcoords {759.0 466.0}
+    labelcoords {759.0 442.0}
+    interface-peer {eth0 n19}
+    custom-config {
+	custom-config-id service:resolvconf
+	custom-command resolvconf
+	config {
+	files=('/etc/resolvconf/resolv.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:resolvconf:/etc/resolvconf/resolv.conf
+	custom-command /etc/resolvconf/resolv.conf
+	config {
+	nameserver 193.81.7.14
+	}
+    }
+    services {DefaultRoute resolvconf ratelimit}
+}
+
+node n28 {
+    type router
+    model router
+    network-config {
+	hostname n28
+	!
+	interface eth0
+	 ip address 193.81.7.50/28
+	!
+	interface eth1
+	 ip address 193.81.11.1/24
+	!
+    }
+    canvas c4
+    iconcoords {694.0 291.0}
+    labelcoords {694.0 323.0}
+    interface-peer {eth1 n44}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward IPsec ratelimit}
+    interface-peer {eth0 n62}
+    custom-config {
+	custom-config-id service:IPsec
+	custom-command IPsec
+	config {
+	files=('ipsec.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:IPsec:ipsec.sh
+	custom-command ipsec.sh
+	config {
+	#!/bin/sh
+	# set up static tunnel mode security assocation for service (security.py)
+	# -------- CUSTOMIZATION REQUIRED --------
+	#
+	# The IPsec service builds ESP tunnels between the specified peers using the
+	# racoon IKEv2 keying daemon. You need to provide keys and the addresses of
+	# peers, along with subnets to tunnel.
+	
+	# directory containing the certificate and key described below
+	keydir=/etc/core/keys
+	
+	# the name used for the "$certname.pem" x509 certificate and 
+	# "$certname.key" RSA private key, which can be generated using openssl
+	certname=ipsec1
+	
+	# list the public-facing IP addresses, starting with the localhost and followed
+	# by each tunnel peer, separated with a single space
+	tunnelhosts="193.81.11.1AND193.81.17.1"
+	
+	# Define T<i> where i is the index for each tunnel peer host from
+	# the tunnel_hosts list above (0 is localhost).
+	# T<i> is a list of IPsec tunnels with peer i, with a local subnet address
+	# followed by the remote subnet address:
+	#   T<i>="<local>AND<remote> <local>AND<remote>"
+	# For example, 172.16.0.0/24 is a local network (behind this node) to be
+	# tunneled and 172.16.2.0/24 is a remote network (behind peer 1)
+	T1="193.81.7.0/28AND193.81.6.0/24 193.81.7.32/28AND193.81.6.0/24 193.81.7.16/28AND193.81.6.0/24"
+	
+	# -------- END CUSTOMIZATION --------
+	
+	echo "building config $PWD/ipsec.conf..." 
+	echo "building config $PWD/ipsec.conf..." > $PWD/ipsec.log
+	
+	checkip=0
+	if [ "$(dpkg -l | grep " sipcalc ")" = "" ]; then
+	   echo "WARNING: ip validation disabled because package sipcalc not installed
+	        " >> $PWD/ipsec.log
+	   checkip=1
+	fi
+	
+	echo "#!/usr/sbin/setkey -f
+	    # Flush the SAD and SPD
+	    flush;
+	    spdflush;
+	
+	    # Security policies  \
+	     " > $PWD/ipsec.conf
+	i=0
+	for hostpair in $tunnelhosts; do 
+	    i=`expr $i + 1`
+	    # parse tunnel host IP
+	    thishost=${hostpair%%AND*}
+	    peerhost=${hostpair##*AND} 
+	    if [ $checkip = "0" ] &&
+	       [ "$(sipcalc "$thishost" "$peerhost" | grep ERR)" != "" ]; then
+		  echo "ERROR: invalid host address $thishost or $peerhost \
+	             " >> $PWD/ipsec.log
+	    fi
+	    # parse each tunnel addresses 
+	    tunnel_list_var_name=T$i
+	    eval tunnels="$"$tunnel_list_var_name""
+	    for ttunnel in $tunnels; do
+	        lclnet=${ttunnel%%AND*}
+	        rmtnet=${ttunnel##*AND} 
+	    	if [ $checkip = "0" ] && 
+	           [ "$(sipcalc "$lclnet" "$rmtnet"| grep ERR)" != "" ]; then
+	    	    echo "ERROR: invalid tunnel address $lclnet and $rmtnet \
+	                 " >> $PWD/ipsec.log
+		fi
+	    	# add tunnel policies
+		echo "
+	    spdadd $lclnet $rmtnet any -P out ipsec
+		esp/tunnel/$thishost-$peerhost/require;
+	    spdadd $rmtnet $lclnet any -P in ipsec
+		esp/tunnel/$peerhost-$thishost/require; \
+	    	    " >> $PWD/ipsec.conf
+	    done
+	done
+	
+	echo "building config $PWD/racoon.conf..."
+	if [ ! -e $keydir\/$certname.key ] || [ ! -e $keydir\/$certname.pem ]; then
+	     echo "ERROR: missing certification files under $keydir \
+	$certname.key or $certname.pem " >> $PWD/ipsec.log
+	fi
+	echo "
+		 path certificate \"$keydir\";
+		 listen {
+			 adminsock disabled;
+		 }
+		 remote anonymous
+		 {
+			 exchange_mode main;
+	 		 certificate_type x509 \"$certname.pem\" \"$certname.key\";
+			 ca_type x509 \"ca-cert.pem\";
+			 my_identifier asn1dn;
+			 peers_identifier asn1dn;
+	
+			 proposal {
+				 encryption_algorithm 3des ;
+				 hash_algorithm sha1;
+				 authentication_method rsasig ;
+				 dh_group modp768;
+			 }
+		 }
+		 sainfo anonymous
+		 {
+			 pfs_group modp768;
+			 lifetime time 1 hour ;
+			 encryption_algorithm 3des, blowfish 448, rijndael ;
+			 authentication_algorithm hmac_sha1, hmac_md5 ;
+			 compression_algorithm deflate ;
+		 }
+		" > $PWD/racoon.conf
+	
+	# the setkey program is required from the ipsec-tools package
+	echo "running setkey -f $PWD/ipsec.conf..."
+	setkey -f $PWD/ipsec.conf
+	
+	echo "running racoon -d -f $PWD/racoon.conf..."
+	racoon -d -f $PWD/racoon.conf -l racoon.log
+	
+	}
+    }
+}
+
+node n30 {
+    type router
+    model host
+    network-config {
+	hostname DB1
+	!
+	interface eth0
+	 ip address 193.81.7.11/28
+	!
+    }
+    canvas c4
+    iconcoords {64.0 393.0}
+    labelcoords {64.0 425.0}
+    custom-config {
+	custom-config-id service:servicios
+	custom-command servicios
+	config {
+	files=('startServices.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:servicios:startServices.sh
+	custom-command startServices.sh
+	config {
+	ncat -l -k 3306 &
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute
+	custom-command StaticRoute
+	config {
+	files=('staticroute.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute:staticroute.sh
+	custom-command staticroute.sh
+	config {
+	#!/bin/sh
+	# auto-generated by StaticRoute service (utility.py)
+	#
+	# NOTE: this service must be customized to be of any use
+	#       Below are samples that you can uncomment and edit.
+	#
+	#/sbin/ip route add 10.9.8.0/24 via 193.81.7.1
+	
+	
+	}
+    }
+    services {DefaultRoute StaticRoute SSH ratelimit servicios}
+    interface-peer {eth0 n61}
+}
+
+node n31 {
+    type router
+    model host
+    network-config {
+	hostname intranet-syper-edu
+	!
+	interface eth0
+	 ip address 193.81.7.12/28
+	!
+    }
+    canvas c4
+    iconcoords {83.0 311.0}
+    labelcoords {83.0 343.0}
+    services {DefaultRoute SSH HTTP ratelimit}
+    custom-config {
+	custom-config-id service:HTTP
+	custom-command HTTP
+	config {
+	dirs=('/var/run/apache2', '/var/log/apache2', '/var/lock/apache2', '/run/lock', '/etc/apache2/sites-enabled', )
+	files=('/etc/apache2/sites-enabled/site.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:HTTP:/etc/apache2/sites-enabled/site.conf
+	custom-command /etc/apache2/sites-enabled/site.conf
+	config {
+	<VirtualHost *:80>
+		ServerName intranet.syper.edu
+		ServerAdmin webmaster@localhost
+		DocumentRoot /var/www/INTRANET
+	
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+	
+	</VirtualHost>
+	
+	}
+    }
+    interface-peer {eth0 n61}
+}
+
+node n32 {
+    type router
+    model host
+    network-config {
+	hostname ns-syper-edu
+	!
+	interface eth0
+	 ip address 193.81.7.34/28
+	!
+    }
+    canvas c4
+    iconcoords {392.0 529.0}
+    labelcoords {392.0 561.0}
+    services {DefaultRoute SSH GenericDNS ratelimit}
+    custom-config {
+	custom-config-id service:GenericDNS
+	custom-command GenericDNS
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.myzone.', '/etc/bind/db.root', )
+	}
+    }
+    custom-config {
+	custom-config-id service:GenericDNS:/etc/bind/db.root
+	custom-command /etc/bind/db.root
+	config {
+	.		NS	ns
+	.		NS	ns2.
+	.		NS	ns3.
+	.		NS	ns4.
+	com.		NS	ns.com.
+	edu.		NS	ns.edu.
+	
+	ns		A	193.81.2.10
+	ns2		A	193.81.2.11
+	ns3		A	8.8.4.11
+	ns4		A	193.81.5.10
+	ns.edu.		A	8.8.4.10
+	ns.com.		A	193.81.2.12
+	}
+    }
+    custom-config {
+	custom-config-id service:GenericDNS:/etc/bind/db.myzone.
+	custom-command /etc/bind/db.myzone.
+	config {
+	$TTL	120
+	@		SOA	ns.syper.edu.  hostmaster.ns.syper.edu. ( 1 3600 1200 604800 60 )
+			NS	ns
+			MX 	10	mail
+	@		A	193.81.7.34
+	ns		A	193.81.7.34
+	
+	fileserver		A	193.81.7.13
+	intranet		A	193.81.7.12
+	www		A	193.81.7.36
+	db1   		A	193.81.7.11
+	smtp		A	193.81.7.35
+	pop3		A	193.81.7.35
+	mail		A	193.81.7.35
+	}
+    }
+    custom-config {
+	custom-config-id service:GenericDNS:/etc/bind/named.conf.local
+	custom-command /etc/bind/named.conf.local
+	config {
+	zone "syper.edu." {
+		type master;
+		file "/etc/bind/db.myzone.";
+	
+	};
+	
+	zone "." {
+		type hint;
+		file "/etc/bind/db.root";
+	};
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:GenericDNS:/etc/bind/named.conf.options
+	custom-command /etc/bind/named.conf.options
+	config {
+	options { 
+		directory "/var/cache/bind";
+		listen-on-v6 { none; };
+	        allow-transfer { any; };
+		version "9.3.6-P1";
+		allow-query { any; };
+		allow-query-cache { any; };
+		recursion yes;
+	};
+	}
+    }
+    interface-peer {eth0 n60}
+}
+
+node n33 {
+    type router
+    model host
+    network-config {
+	hostname resolverDNS
+	!
+	interface eth0
+	 ip address 193.81.7.14/28
+	!
+    }
+    canvas c4
+    iconcoords {263.0 488.0}
+    labelcoords {263.0 520.0}
+    services {DefaultRoute SSH Resolver ratelimit}
+    custom-config {
+	custom-config-id service:Resolver
+	custom-command Resolver
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.root', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Resolver:/etc/bind/db.root
+	custom-command /etc/bind/db.root
+	config {
+	.		NS	ns
+	.		NS	ns2.
+	.		NS	ns3.
+	.		NS	ns4.
+	com.		NS	ns.com.
+	edu.		NS	ns.edu.
+	
+	ns		A	193.81.2.10
+	ns2		A	193.81.2.11
+	ns3		A	8.8.4.11
+	ns4		A	193.81.5.10
+	ns.edu.		A	8.8.4.10
+	ns.com.		A	193.81.2.12
+	}
+    }
+    interface-peer {eth0 n61}
+}
+
+node n34 {
+    type router
+    model host
+    network-config {
+	hostname SMTP-syper-edu
+	!
+	interface eth0
+	 ip address 193.81.7.35/28
+	!
+    }
+    canvas c4
+    iconcoords {654.0 408.0}
+    labelcoords {654.0 440.0}
+    custom-config {
+	custom-config-id service:servicios
+	custom-command servicios
+	config {
+	files=('startServices.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:servicios:startServices.sh
+	custom-command startServices.sh
+	config {
+	ncat -l -k 25 &
+	ncat -l -k 110 &
+	ncat -l -k 143 &
+	ncat -l -k 993 &
+	ncat -l -k 995 &
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute
+	custom-command StaticRoute
+	config {
+	files=('staticroute.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute:staticroute.sh
+	custom-command staticroute.sh
+	config {
+	#!/bin/sh
+	# auto-generated by StaticRoute service (utility.py)
+	#
+	# NOTE: this service must be customized to be of any use
+	#       Below are samples that you can uncomment and edit.
+	#
+	#/sbin/ip route add 10.9.8.0/24 via 193.81.7.1
+	
+	
+	}
+    }
+    services {DefaultRoute StaticRoute SSH ratelimit servicios}
+    interface-peer {eth0 n60}
+}
+
+node n35 {
+    type router
+    model host
+    network-config {
+	hostname www-syper-edu
+	!
+	interface eth0
+	 ip address 193.81.7.36/28
+	!
+    }
+    canvas c4
+    iconcoords {579.0 535.0}
+    labelcoords {579.0 567.0}
+    services {DefaultRoute SSH HTTP ratelimit}
+    custom-config {
+	custom-config-id service:HTTP
+	custom-command HTTP
+	config {
+	dirs=('/var/run/apache2', '/var/log/apache2', '/var/lock/apache2', '/run/lock', '/etc/apache2/sites-enabled', )
+	files=('/etc/apache2/sites-enabled/site.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:HTTP:/etc/apache2/sites-enabled/site.conf
+	custom-command /etc/apache2/sites-enabled/site.conf
+	config {
+	<VirtualHost *:80>
+		ServerName www.syper.edu
+		ServerAdmin webmaster@localhost
+		DocumentRoot /var/www/WWW
+	
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+	
+	</VirtualHost>
+	
+	}
+    }
+    interface-peer {eth0 n60}
+}
+
+node n36 {
+    type router
+    model PC
+    network-config {
+	hostname User1
+	!
+	interface eth0
+	 ip address 193.81.7.20/28
+	!
+    }
+    canvas c4
+    iconcoords {63.0 117.0}
+    labelcoords {53.0 89.0}
+    custom-config {
+	custom-config-id service:resolvconf
+	custom-command resolvconf
+	config {
+	files=('/etc/resolvconf/resolv.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:resolvconf:/etc/resolvconf/resolv.conf
+	custom-command /etc/resolvconf/resolv.conf
+	config {
+	nameserver 193.81.7.14
+	
+	}
+    }
+    services {DefaultRoute resolvconf ratelimit}
+    interface-peer {eth0 n29}
+}
+
+node n37 {
+    type router
+    model PC
+    network-config {
+	hostname User2
+	!
+	interface eth0
+	 ip address 193.81.7.21/28
+	!
+    }
+    canvas c4
+    iconcoords {221.0 102.0}
+    labelcoords {221.0 82.0}
+    custom-config {
+	custom-config-id service:resolvconf
+	custom-command resolvconf
+	config {
+	files=('/etc/resolvconf/resolv.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:resolvconf:/etc/resolvconf/resolv.conf
+	custom-command /etc/resolvconf/resolv.conf
+	config {
+	nameserver 193.81.7.14
+	
+	}
+    }
+    services {DefaultRoute resolvconf ratelimit}
+    interface-peer {eth0 n29}
+}
+
+node n38 {
+    type router
+    model PC
+    network-config {
+	hostname User3
+	!
+	interface eth0
+	 ip address 193.81.7.22/28
+	!
+    }
+    canvas c4
+    iconcoords {432.0 95.0}
+    labelcoords {426.0 75.0}
+    custom-config {
+	custom-config-id service:resolvconf
+	custom-command resolvconf
+	config {
+	files=('/etc/resolvconf/resolv.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:resolvconf:/etc/resolvconf/resolv.conf
+	custom-command /etc/resolvconf/resolv.conf
+	config {
+	nameserver 193.81.7.14
+	}
+    }
+    services {DefaultRoute resolvconf ratelimit}
+    interface-peer {eth0 n29}
+}
+
+node n39 {
+    type router
+    model PC
+    network-config {
+	hostname User4
+	!
+	interface eth0
+	 ip address 193.81.7.23/28
+	!
+    }
+    canvas c4
+    iconcoords {549.0 134.0}
+    labelcoords {556.0 110.0}
+    custom-config {
+	custom-config-id service:resolvconf
+	custom-command resolvconf
+	config {
+	files=('/etc/resolvconf/resolv.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:resolvconf:/etc/resolvconf/resolv.conf
+	custom-command /etc/resolvconf/resolv.conf
+	config {
+	nameserver 193.81.7.14
+	
+	}
+    }
+    services {DefaultRoute resolvconf ratelimit}
+    interface-peer {eth0 n29}
+}
+
+node n40 {
+    type router
+    model router
+    network-config {
+	hostname n40
+	!
+	interface eth2
+	 ip address 193.81.10.1/24
+	!
+	interface eth1
+	 ip address 193.81.9.2/24
+	!
+	interface eth0
+	 ip address 193.81.8.1/24
+	!
+    }
+    canvas c5
+    iconcoords {355.0 162.0}
+    labelcoords {355.0 194.0}
+    interface-peer {eth0 n41}
+    interface-peer {eth1 n43}
+    interface-peer {eth2 n42}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n41 {
+    type router
+    model router
+    network-config {
+	hostname n41
+	!
+	interface eth1
+	 ip address 193.81.11.2/24
+	!
+	interface eth0
+	 ip address 193.81.8.2/24
+	!
+    }
+    canvas c5
+    iconcoords {163.0 377.0}
+    labelcoords {163.0 409.0}
+    interface-peer {eth0 n40}
+    interface-peer {eth1 n45}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n42 {
+    type router
+    model router
+    network-config {
+	hostname n42
+	!
+	interface eth1
+	 ip address 193.81.13.1/24
+	!
+	interface eth0
+	 ip address 193.81.10.2/24
+	!
+    }
+    canvas c5
+    iconcoords {632.0 464.0}
+    labelcoords {632.0 496.0}
+    interface-peer {eth0 n40}
+    interface-peer {eth1 n47}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n43 {
+    type router
+    model router
+    network-config {
+	hostname n43
+	!
+	interface eth1
+	 ip address 193.81.14.1/24
+	!
+	interface eth0
+	 ip address 193.81.9.1/24
+	!
+    }
+    canvas c5
+    iconcoords {654.0 199.0}
+    labelcoords {654.0 231.0}
+    interface-peer {eth0 n40}
+    interface-peer {eth1 n50}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n44 {
+    type pseudo
+    network-config {
+	hostname n41
+	!
+    }
+    canvas c4
+    iconcoords {999.0 292.0}
+    labelcoords {999.0 292.0}
+    interface-peer {0 n28}
+    mirror n45
+}
+
+node n45 {
+    type pseudo
+    network-config {
+	hostname n28
+	!
+    }
+    canvas c5
+    iconcoords {0.0 377.0}
+    labelcoords {0.0 377.0}
+    interface-peer {0 n41}
+    mirror n44
+}
+
+node n46 {
+    type router
+    model router
+    network-config {
+	hostname n46
+	!
+	interface eth1
+	 ip address 193.81.13.2/24
+	!
+	interface eth0
+	 ip address 193.81.12.1/24
+	!
+    }
+    canvas c1
+    iconcoords {814.0 135.0}
+    labelcoords {814.0 167.0}
+    interface-peer {eth0 n14}
+    interface-peer {eth1 n48}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n47 {
+    type pseudo
+    network-config {
+	hostname n46
+	!
+    }
+    canvas c5
+    iconcoords {632.0 665.0}
+    labelcoords {632.0 665.0}
+    interface-peer {0 n42}
+    mirror n48
+}
+
+node n48 {
+    type pseudo
+    network-config {
+	hostname n42
+	!
+    }
+    canvas c1
+    iconcoords {813.0 18.0}
+    labelcoords {813.0 18.0}
+    interface-peer {0 n46}
+    mirror n47
+}
+
+node n49 {
+    type router
+    model router
+    network-config {
+	hostname n49
+	!
+	interface eth1
+	 ip address 193.81.15.1/24
+	!
+	interface eth0
+	 ip address 193.81.14.2/24
+	!
+    }
+    canvas c2
+    iconcoords {253.0 162.0}
+    labelcoords {253.0 194.0}
+    interface-peer {eth0 n51}
+    interface-peer {eth1 n52}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n50 {
+    type pseudo
+    network-config {
+	hostname n49
+	!
+    }
+    canvas c5
+    iconcoords {990.0 195.0}
+    labelcoords {990.0 195.0}
+    interface-peer {0 n43}
+    mirror n51
+}
+
+node n51 {
+    type pseudo
+    network-config {
+	hostname n43
+	!
+    }
+    canvas c2
+    iconcoords {14.0 163.0}
+    labelcoords {14.0 163.0}
+    interface-peer {0 n49}
+    mirror n50
+}
+
+node n52 {
+    type router
+    model router
+    network-config {
+	hostname n52
+	!
+	interface eth2
+	 ip address 193.81.18.1/24
+	!
+	interface eth1
+	 ip address 193.81.16.1/24
+	!
+	interface eth0
+	 ip address 193.81.15.2/24
+	!
+    }
+    canvas c2
+    iconcoords {480.0 358.0}
+    labelcoords {523.0 380.0}
+    interface-peer {eth0 n49}
+    interface-peer {eth1 n53}
+    interface-peer {eth2 n56}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n53 {
+    type router
+    model router
+    network-config {
+	hostname n53
+	!
+	interface eth1
+	 ip address 193.81.17.2/24
+	!
+	interface eth0
+	 ip address 193.81.16.2/24
+	!
+    }
+    canvas c2
+    iconcoords {922.0 357.0}
+    labelcoords {922.0 389.0}
+    interface-peer {eth0 n52}
+    interface-peer {eth1 n55}
+    services {zebra OSPFv2 OSPFv3 vtysh IPForward ratelimit}
+}
+
+node n54 {
+    type pseudo
+    network-config {
+	hostname n53
+	!
+    }
+    canvas c3
+    iconcoords {299.0 9.0}
+    labelcoords {299.0 9.0}
+    interface-peer {0 n18}
+    mirror n55
+}
+
+node n55 {
+    type pseudo
+    network-config {
+	hostname n18
+	!
+    }
+    canvas c2
+    iconcoords {923.0 670.0}
+    labelcoords {923.0 670.0}
+    interface-peer {0 n53}
+    mirror n54
+}
+
+node n56 {
+    type rj45
+    network-config {
+	hostname dummy0
+	!
+    }
+    canvas c2
+    iconcoords {415.0 482.0}
+    labelcoords {475.0 478.0}
+    interface-peer {0 n52}
+}
+
+node n57 {
+    type router
+    model host
+    network-config {
+	hostname FileServer1
+	!
+	interface eth0
+	 ip address 193.81.7.13/28
+	!
+    }
+    canvas c4
+    iconcoords {88.0 484.0}
+    labelcoords {88.0 516.0}
+    custom-config {
+	custom-config-id service:servicios
+	custom-command servicios
+	config {
+	files=('startServices.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:servicios:startServices.sh
+	custom-command startServices.sh
+	config {
+	ncat -l -k 135 &
+	ncat -l -k 139 &
+	ncat -l -k 445 &
+	/sbin/chargen &
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute
+	custom-command StaticRoute
+	config {
+	files=('staticroute.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute:staticroute.sh
+	custom-command staticroute.sh
+	config {
+	#!/bin/sh
+	# auto-generated by StaticRoute service (utility.py)
+	#
+	# NOTE: this service must be customized to be of any use
+	#       Below are samples that you can uncomment and edit.
+	#
+	#/sbin/ip route add 10.9.8.0/24 via 193.81.7.1
+	#/sbin/ip route add 3ffe:4::/64 via ::1
+	
+	}
+    }
+    services {DefaultRoute StaticRoute SSH ratelimit servicios}
+    interface-peer {eth0 n61}
+}
+
+node n58 {
+    type router
+    model host
+    network-config {
+	hostname Printer
+	!
+	interface eth0
+	 ip address 193.81.7.30/28
+	!
+    }
+    canvas c4
+    iconcoords {597.0 202.0}
+    labelcoords {597.0 234.0}
+    custom-config {
+	custom-config-id service:servicios
+	custom-command servicios
+	config {
+	files=('startServices.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:servicios:startServices.sh
+	custom-command startServices.sh
+	config {
+	ncat -l -k 9100 &
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute
+	custom-command StaticRoute
+	config {
+	files=('staticroute.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:StaticRoute:staticroute.sh
+	custom-command staticroute.sh
+	config {
+	#!/bin/sh
+	# auto-generated by StaticRoute service (utility.py)
+	#
+	# NOTE: this service must be customized to be of any use
+	#       Below are samples that you can uncomment and edit.
+	#
+	#/sbin/ip route add 10.9.8.0/24 via 193.81.7.1
+	
+	
+	}
+    }
+    services {DefaultRoute StaticRoute SSH ratelimit servicios}
+    interface-peer {eth0 n29}
+}
+
+node n22 {
+    type router
+    model host
+    network-config {
+	hostname ns-google-com
+	!
+	interface eth0
+	 ip address 193.81.3.11/24
+	!
+    }
+    canvas c1
+    iconcoords {890.0 333.0}
+    labelcoords {885.0 316.0}
+    interface-peer {eth0 n12}
+    custom-config {
+	custom-config-id service:GenericDNS
+	custom-command GenericDNS
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.myzone.', )
+	}
+    }
+    custom-config {
+	custom-config-id service:GenericDNS:/etc/bind/db.myzone.
+	custom-command /etc/bind/db.myzone.
+	config {
+	$TTL	120
+	@		SOA	ns.google.com.  hostmaster.ns.google.com. ( 1 3600 1200 604800 60 )
+			NS	ns
+	
+	@		A	193.81.3.11
+	ns		A	193.81.3.11
+	
+	www		A	193.81.3.10
+	
+	
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:GenericDNS:/etc/bind/named.conf.local
+	custom-command /etc/bind/named.conf.local
+	config {
+	zone "google.com." {
+		type master;
+		file "/etc/bind/db.myzone.";
+	};
+	
+	}
+    }
+    services {DefaultRoute SSH GenericDNS}
+}
+
+node n59 {
+    type router
+    model host
+    network-config {
+	hostname ns-att-com
+	!
+	interface eth0
+	 ip address 193.81.5.12/24
+	!
+    }
+    canvas c1
+    iconcoords {147.0 207.0}
+    labelcoords {147.0 239.0}
+    interface-peer {eth0 n17}
+    custom-config {
+	custom-config-id service:GenericDNS
+	custom-command GenericDNS
+	config {
+	files=('/etc/bind/named.conf', '/etc/bind/named.conf.options', '/etc/bind/named.conf.local', '/etc/bind/rndc.key', '/etc/bind/db.myzone.', )
+	}
+    }
+    custom-config {
+	custom-config-id service:GenericDNS:/etc/bind/db.myzone.
+	custom-command /etc/bind/db.myzone.
+	config {
+	$TTL	120
+	@		SOA	ns.att.com.  hostmaster.ns.att.com. ( 1 3600 1200 604800 60 )
+			NS	ns
+	
+	@		A	193.81.5.12
+	ns		A	193.81.5.12
+	
+	www		A	193.81.5.11
+	}
+    }
+    custom-config {
+	custom-config-id service:GenericDNS:/etc/bind/named.conf.local
+	custom-command /etc/bind/named.conf.local
+	config {
+	zone "att.com." {
+		type master;
+		file "/etc/bind/db.myzone.";
+	};
+	
+	}
+    }
+    services {DefaultRoute SSH GenericDNS}
+}
+
+node n29 {
+    type lanswitch
+    network-config {
+	hostname n29
+	!
+    }
+    canvas c4
+    iconcoords {321.0 195.0}
+    labelcoords {321.0 219.0}
+    interface-peer {e0 n36}
+    interface-peer {e1 n37}
+    interface-peer {e2 n38}
+    interface-peer {e3 n39}
+    interface-peer {e4 n58}
+    interface-peer {e5 n62}
+}
+
+node n60 {
+    type lanswitch
+    network-config {
+	hostname n60
+	!
+    }
+    canvas c4
+    iconcoords {443.0 420.0}
+    labelcoords {443.0 444.0}
+    interface-peer {e0 n34}
+    interface-peer {e1 n35}
+    interface-peer {e2 n32}
+    interface-peer {e3 n62}
+}
+
+node n61 {
+    type lanswitch
+    network-config {
+	hostname n61
+	!
+    }
+    canvas c4
+    iconcoords {236.0 367.0}
+    labelcoords {236.0 391.0}
+    interface-peer {e0 n31}
+    interface-peer {e1 n57}
+    interface-peer {e2 n30}
+    interface-peer {e3 n33}
+    interface-peer {e4 n62}
+}
+
+node n62 {
+    type router
+    model router
+    network-config {
+	hostname n62
+	!
+	interface eth3
+	 ip address 193.81.7.49/28
+	!
+	interface eth2
+	 ip address 193.81.7.33/28
+	!
+	interface eth1
+	 ip address 193.81.7.1/28
+	!
+	interface eth0
+	 ip address 193.81.7.17/28
+	!
+    }
+    canvas c4
+    iconcoords {382.0 305.0}
+    labelcoords {382.0 337.0}
+    interface-peer {eth0 n29}
+    interface-peer {eth1 n61}
+    interface-peer {eth2 n60}
+    interface-peer {eth3 n28}
+}
+
+link l2 {
+    nodes {n7 n3}
+    bandwidth 0
+}
+
+link l4 {
+    nodes {n6 n7}
+    bandwidth 0
+}
+
+link l3 {
+    nodes {n8 n5}
+    bandwidth 0
+}
+
+link l5 {
+    nodes {n4 n8}
+    bandwidth 0
+}
+
+link l6 {
+    nodes {n1 n8}
+    bandwidth 0
+}
+
+link l7 {
+    nodes {n2 n8}
+    bandwidth 0
+}
+
+link l8 {
+    nodes {n7 n9}
+    bandwidth 0
+}
+
+link l9 {
+    nodes {n7 n10}
+    bandwidth 0
+}
+
+link l10 {
+    nodes {n6 n12}
+    bandwidth 0
+}
+
+link l11 {
+    nodes {n12 n11}
+    bandwidth 0
+}
+
+link l1 {
+    nodes {n5 n13}
+    bandwidth 0
+}
+
+link l12 {
+    nodes {n13 n6}
+    bandwidth 0
+}
+
+link l13 {
+    nodes {n13 n14}
+    bandwidth 0
+}
+
+link l14 {
+    nodes {n15 n17}
+    bandwidth 0
+}
+
+link l15 {
+    nodes {n16 n17}
+    bandwidth 0
+}
+
+link l16 {
+    nodes {n17 n14}
+    bandwidth 0
+}
+
+link l17 {
+    nodes {n18 n19}
+    bandwidth 0
+}
+
+link l19 {
+    nodes {n19 n21}
+    bandwidth 0
+}
+
+link l22 {
+    nodes {n19 n24}
+    bandwidth 0
+}
+
+link l23 {
+    nodes {n19 n25}
+    bandwidth 0
+}
+
+link l24 {
+    nodes {n19 n26}
+    bandwidth 0
+}
+
+link l25 {
+    nodes {n19 n27}
+    bandwidth 0
+}
+
+link l37 {
+    nodes {n40 n41}
+    bandwidth 0
+}
+
+link l38 {
+    nodes {n43 n40}
+    bandwidth 0
+}
+
+link l39 {
+    nodes {n40 n42}
+    bandwidth 0
+}
+
+link l41 {
+    mirror l42
+    nodes {n28 n44}
+}
+
+link l42 {
+    mirror l41
+    nodes {n41 n45}
+}
+
+link l40 {
+    nodes {n46 n14}
+    bandwidth 0
+}
+
+link l44 {
+    mirror l45
+    nodes {n42 n47}
+}
+
+link l45 {
+    mirror l44
+    nodes {n46 n48}
+}
+
+link l46 {
+    mirror l47
+    nodes {n43 n50}
+}
+
+link l47 {
+    mirror l46
+    nodes {n49 n51}
+}
+
+link l43 {
+    nodes {n49 n52}
+    bandwidth 0
+}
+
+link l48 {
+    nodes {n52 n53}
+    bandwidth 0
+}
+
+link l50 {
+    mirror l51
+    nodes {n18 n54}
+}
+
+link l51 {
+    mirror l50
+    nodes {n53 n55}
+}
+
+link l49 {
+    nodes {n56 n52}
+}
+
+link l20 {
+    nodes {n12 n22}
+    bandwidth 0
+}
+
+link l54 {
+    nodes {n17 n59}
+    bandwidth 0
+}
+
+link l26 {
+    nodes {n36 n29}
+    bandwidth 0
+}
+
+link l27 {
+    nodes {n37 n29}
+    bandwidth 0
+}
+
+link l28 {
+    nodes {n38 n29}
+    bandwidth 0
+}
+
+link l29 {
+    nodes {n29 n39}
+    bandwidth 0
+}
+
+link l30 {
+    nodes {n29 n58}
+    bandwidth 0
+}
+
+link l31 {
+    nodes {n34 n60}
+    bandwidth 0
+}
+
+link l32 {
+    nodes {n35 n60}
+    bandwidth 0
+}
+
+link l33 {
+    nodes {n32 n60}
+    bandwidth 0
+}
+
+link l34 {
+    nodes {n31 n61}
+    bandwidth 0
+}
+
+link l35 {
+    nodes {n57 n61}
+    bandwidth 0
+}
+
+link l36 {
+    nodes {n30 n61}
+    bandwidth 0
+}
+
+link l52 {
+    nodes {n33 n61}
+    bandwidth 0
+}
+
+link l53 {
+    nodes {n29 n62}
+    bandwidth 0
+}
+
+link l55 {
+    nodes {n61 n62}
+    bandwidth 0
+}
+
+link l56 {
+    nodes {n62 n60}
+    bandwidth 0
+}
+
+link l57 {
+    nodes {n62 n28}
+    bandwidth 0
+}
+
+annotation a1 {
+    iconcoords {514.0 73.0}
+    type text
+    label {Internet - Ruteo INTERNACIONAL}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {20}
+    effects {bold italic}
+    canvas c1
+}
+
+annotation a2 {
+    type text
+    iconcoords {585.0 84.0}
+    label {}
+    canvas c1
+}
+
+annotation a3 {
+    iconcoords {588 291 935 718}
+    type rectangle
+    label {GoogleNetwork}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #C0C0FF
+    width 0
+    border black
+    rad 25
+    effects {italic}
+    canvas c1
+}
+
+annotation a4 {
+    iconcoords {43 327 399 699}
+    type rectangle
+    label {Root Servers and TLD Network}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #C0C0FF
+    width 0
+    border black
+    rad 25
+    effects {italic}
+    canvas c1
+}
+
+annotation a5 {
+    iconcoords {89 62 581 250}
+    type rectangle
+    label {AT&T Network}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #C0C0FF
+    width 0
+    border black
+    rad 25
+    effects {italic}
+    canvas c1
+}
+
+annotation a6 {
+    iconcoords {445.0 75.0}
+    type text
+    label {Internet - Ruteo LOCAL / NACIONAL}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {20}
+    effects {bold italic}
+    canvas c2
+}
+
+annotation a7 {
+    iconcoords {433.0 32.0}
+    type text
+    label {OFICINAS PRINCIPALES DE syper.edu}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {20}
+    effects {bold italic}
+    canvas c4
+}
+
+annotation a8 {
+    type text
+    iconcoords {431.0 36.0}
+    label {}
+    canvas c4
+}
+
+annotation a9 {
+    iconcoords {624.0 40.0}
+    type text
+    label {SUCURSAL DE syper.edu}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {20}
+    effects {bold italic}
+    canvas c3
+}
+
+annotation a10 {
+    iconcoords {735.0 175.0}
+    type text
+    label {Conexion NACIONAL a ISP2}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    effects {bold italic}
+    canvas c5
+}
+
+annotation a11 {
+    iconcoords {380.0 629.0}
+    type text
+    label {Conexion INTERNACIONAL}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    effects {bold italic}
+    canvas c5
+}
+
+annotation a12 {
+    type text
+    iconcoords {845.0 102.0}
+    label {}
+    canvas c5
+}
+
+annotation a13 {
+    iconcoords {29.0 79.0}
+    type text
+    label {Conexion NACIONAL a ISP1}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    effects {bold italic}
+    canvas c2
+}
+
+annotation a14 {
+    iconcoords {690.0 179.0}
+    type text
+    label {Conexion al proveedor de Internet}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    effects {bold italic}
+    canvas c4
+}
+
+annotation a15 {
+    iconcoords {77.0 47.0}
+    type text
+    label {Conexion al proveedor de Internet}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    effects {bold italic}
+    canvas c3
+}
+
+annotation a16 {
+    iconcoords {771.0 305.0}
+    type text
+    label {Conexion a Cliente 1}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    effects {bold italic}
+    canvas c2
+}
+
+annotation a17 {
+    iconcoords {260.0 459.0}
+    type text
+    label {Conexion a Cliente 2}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    effects {bold italic}
+    canvas c2
+}
+
+annotation a18 {
+    iconcoords {27 480 803 581}
+    type rectangle
+    label {La MAQUINA VIRTUAL, se comunica con la topologia a traves de esta conexion}
+    labelcolor #ff0000
+    fontfamily {Arial}
+    fontsize {12}
+    color #C0C0FF
+    width 0
+    border black
+    rad 25
+    effects {bold italic}
+    canvas c2
+}
+
+annotation a19 {
+    iconcoords {16 52 690 581}
+    type rectangle
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #C0C0FF
+    width 0
+    border black
+    rad 25
+    canvas c4
+}
+
+annotation a20 {
+    iconcoords {146.0 58.0 703.0 515.0}
+    type rectangle
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #4ec029
+    width 0
+    border black
+    rad 25
+    canvas c5
+}
+
+annotation a21 {
+    iconcoords {141 175 852 621}
+    type rectangle
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #C0C0FF
+    width 0
+    border black
+    rad 25
+    canvas c3
+}
+
+canvas c4 {
+    name {syperPRINCIPAL}
+}
+
+canvas c5 {
+    name {ISP1}
+}
+
+canvas c1 {
+    name {Internet}
+}
+
+canvas c2 {
+    name {ISP2}
+}
+
+canvas c3 {
+    name {syperSUCURSAL}
+}
+
+hook 4:configurar_ruteo_hacia_topologia.sh {
+#!/bin/sh
+# session hook script; write commands here to execute on the host at the
+# specified state
+
+INTERFAZ=`brctl show | grep veth52.2 | head -n1 | cut -f1`
+if [ -z "$INTERFAZ" ]
+then
+INTERFAZ=`brctl show | grep veth52.2 -B1 | head -n1 | cut -f1`
+fi
+
+ifconfig "$INTERFAZ" 193.81.18.2 netmask 255.255.255.0
+route del default
+route add default gw 193.81.18.1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+hook 6:restaurar_ruteo_internet.sh {
+#!/bin/sh
+# session hook script; write commands here to execute on the host at the
+# specified state
+
+dhclient
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+option global {
+    interface_names yes
+    ip_addresses yes
+    ipv6_addresses yes
+    node_labels yes
+    link_labels yes
+    show_api no
+    background_images no
+    annotations yes
+    grid no
+    traffic_start 0
+}
+
+option session {
+    enablerj45=0
+}
+
