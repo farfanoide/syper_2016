@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if ! command -v _success &> /dev/null;then
+    source test_helpers.sh
+fi
+
 function check_dns_config()
 {
   local test_name=$1
@@ -37,9 +41,9 @@ function check_dns_config()
   esac
 
   if vcmd -c $SOCKETS_DIR/b-root-server -- $command_to_run | condition ;then
-    _success "${success}"
+    _success "[SUCCESS] ${success}"
   else
-    _error "${fail}"
+    _error "[ERROR] ${fail}"
   fi
 }
 
@@ -51,7 +55,7 @@ check_dns_config 'iterative_user6'
 _info 'Testeando version en resolverDNS'
 check_dns_config 'version_resolver'
 
-_info "Tests ns-syper-edu"
+_info "Tests DNS en ns-syper-edu"
 check_dns_config 'recursive'
 check_dns_config 'transfer'
 check_dns_config 'version'

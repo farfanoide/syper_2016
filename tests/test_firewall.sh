@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if ! command -v _success &> /dev/null;then
+    source test_helpers.sh
+fi
+
 SOCKETS_DIR=$(ps aux | grep -oP "/tmp/pycore.[0-99999999999].+?(?=/)" | head -n1)
 
 function node_ping()
