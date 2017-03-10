@@ -18,7 +18,7 @@ function check_ping()
 
 }
 
-_info 'Testeando enctriptado de trafico entre sucursal y central'
+_info "Testeando enctriptado de trafico entre sucursal y central $(_error '(configurado desde topologia)')"
 check_ping &
 vcmd -c $SOCKETS_DIR/User6 -- ping www.syper.edu -c 10 > /dev/null
 

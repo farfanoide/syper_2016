@@ -169,11 +169,6 @@ function configure_waf()
     cp "${apache_dir}/apache2.conf"{,_backup}
     cp "${CONFIGS_DIR}/waf/apache2.conf" "${apache_dir}"
 
-    # _info 'Configurando hosts en /etc/hosts'
-    # for site in 'intranet-syper-edu www-syper-edu' ; do
-    #   grep -q "127.0.0.1 ${site}" /etc/hosts || echo "127.0.0.1 ${site}" >> /etc/hosts
-    # done
-
     cp "${CONFIGS_DIR}/waf/error.html" /var/www/WWW
     cp "${CONFIGS_DIR}/waf/error.html" /var/www/INTRANET
     chown www-data: /var/www/WWW/error.html
@@ -185,10 +180,24 @@ function configure_waf()
 }
 # END WAF: }}}
 
+# IDS: {{{
+function configure_ids()
+{
+  _info 'Configurando SNORT en N28' && \
+    cp "${CONFIGS_DIR}/snort/n28.sh" "${SOCKETS_DIR}/n28.conf/syper_snort.sh" && \
+    vcmd -c $SOCKETS_DIR/n28 -- ./syper_snort.sh
+
+  _info 'Configurando SNORT en N18' && \
+    cp "${CONFIGS_DIR}/snort/n18.sh" "${SOCKETS_DIR}/n18.conf/syper_snort.sh" && \
+    vcmd -c $SOCKETS_DIR/n18 -- ./syper_snort.sh
+}
+# IDS: }}}
+
 # RUN STUFF: {{{
 clear
 configure_dns
 configure_firewalls
 configure_vpn
 configure_waf
+configure_ids
 # END RUN STUFF: }}}
